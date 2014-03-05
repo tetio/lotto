@@ -1,0 +1,33 @@
+<div data-ng-controller="LottoDrawController">
+<div style="float: right">
+    <a href="#!/create" class="btn btn-default" ng-show="hasRole('admin')">Create</a>
+	<form class="form-horizontal">
+        <div class="form-group">
+            <label for="nElems" class="col-sm-3 control-label">Max. elems:</label>
+            <div class="col-sm-9">
+                <input id="username" ng-model="nElems" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3">
+                <input type="submit" value="List" class="btn btn-primary" ng-click="listElems()"/>
+            </div>
+        </div>
+	</form>
+</div>
+
+<div class="page-header">
+    <h3>Lotto Draws</h3>
+</div>
+
+<div ng-repeat="lottoDraw in lottoDrawEntries">
+    <hr />
+    <div class="pull-right">
+        <a ng-click="deleteEntry(lottoDraw)" class="btn btn-xs btn-default" ng-show="hasRole('admin')">Remove</a>
+        <a href="#!/edit/{{lottoDraw.id}}" class="btn btn-xs btn-default" ng-show="hasRole('admin')">Edit</a>
+    </div>
+    <h4>{{lottoDraw.date| date}}</h4>
+    <p>{{lottoDraw.ball1}}, {{lottoDraw.ball2}}, {{lottoDraw.ball3}}, {{lottoDraw.ball4}}, {{lottoDraw.ball5}}, {{lottoDraw.ball6}}</p>
+</div>
+</div>    
+<hr />
