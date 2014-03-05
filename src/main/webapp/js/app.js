@@ -23,7 +23,14 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
 
         $routeProvider.when('/lottoDraw', {
             templateUrl: 'partials/lottoDrawList.html',
-            controller: 'LottoDrawController'
+            controller: 'LottoDrawController',
+            oper: 'index'
+        });
+
+        $routeProvider.when('/lottoDraw/create', {
+            templateUrl: 'partials/lottoDrawCreate.html',
+            controller: 'LottoDrawController',
+            oper: 'create'
         });
 
         $routeProvider.otherwise({

@@ -77,6 +77,17 @@ public class LottoDrawResource {
         }
         return viewWriter.writeValueAsString(entries);
     }
+
+    
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public LottoDraw create(LottoDraw lottoDraw) {
+
+		this.logger.info("create(): " + lottoDraw);
+
+		return this.lottoDrawDao.save(lottoDraw);
+	}    
     
     private boolean isAdmin() {
 

@@ -100,6 +100,8 @@
 		<security:intercept-url method="DELETE" pattern="/rest/news/**" access="hasRole('admin')" />
 		<security:intercept-url method="GET" pattern="/rest/lottoDraw/**" access="hasRole('user')" />
         <security:intercept-url method="POST" pattern="/rest/lottoDraw/**" access="hasRole('admin')" />
+        <security:intercept-url method="PUT" pattern="/rest/lottoDraw/**" access="hasRole('admin')" />
+        <security:intercept-url method="DELETE" pattern="/rest/lottoDraw/**" access="hasRole('admin')" />
 
 	</security:http> 
 
