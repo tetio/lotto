@@ -24,7 +24,7 @@ var LottoDrawController = function($rootScope, $scope, $route, $location, LottoD
 
 	$scope.save = function() {
 		$scope.lottoDrawEntry.$save(function() {
-			$location.path('/lotto');
+			$location.path('/lottoDraw');
 		});
 	};
 };
