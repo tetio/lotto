@@ -14,9 +14,9 @@ var LottoDrawController = function($rootScope, $scope, $route, $location, LottoD
     };
     
 
-    $scope.hasRole = function(role) {
-        return $rootScope.hasRole(role);
-    };
+//    $scope.hasRole = function(role) {
+//        return $rootScope.hasRole(role);
+//    };
 
     $scope.listElems = function() {
         $scope.lottoDrawEntries = LottoDrawService.listElems($.param({nElems: $scope.nElems}));
