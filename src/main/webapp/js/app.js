@@ -1,7 +1,7 @@
 'use strict';
 
 var app = angular.module('lottoApp',
-        ['ngRoute', 'ngCookies', 'lottoApp.services']);
+        ['ui.bootstrap', 'ngRoute', 'ngCookies', 'lottoApp.services']);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider',
     function($routeProvider, $locationProvider, $httpProvider) {
