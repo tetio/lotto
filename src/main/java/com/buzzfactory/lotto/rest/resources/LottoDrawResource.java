@@ -4,19 +4,17 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import com.buzzfactory.lotto.JsonViews;
 import com.buzzfactory.lotto.dao.lottodraw.LottoDrawDao;
 import com.buzzfactory.lotto.entity.LottoDraw;
+import com.buzzfactory.lotto.parser.Lotto649Parser;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 
@@ -88,6 +86,34 @@ public class LottoDrawResource {
 
 		return this.lottoDrawDao.save(lottoDraw);
 	}    
+    
+    
+    @Path("init")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String initDB() throws JsonGenerationException, JsonMappingException, IOException {
+        this.logger.info("initDB()");
+        
+        Lotto649Parser parser = new Lotto649Parser();
+        List<LottoDraw> lds = parser.parse();
+        for (LottoDraw ld: lds) {
+            if(!lottoDrawDao.exists(ld.getDrawDate())) {
+                lottoDrawDao.save(ld);
+            }
+        }
+        lds.clear();
+        lds = this.lottoDrawDao.findAll();
+        
+        ObjectWriter viewWriter;
+        if (this.isAdmin()) {
+            viewWriter = this.mapper.writerWithView(JsonViews.Admin.class);
+        } else {
+            viewWriter = this.mapper.writerWithView(JsonViews.User.class);
+        }
+
+        return viewWriter.writeValueAsString(lds);
+    }    
+    
     
     private boolean isAdmin() {
 

@@ -24,13 +24,13 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
         $routeProvider.when('/lottoDraw', {
             templateUrl: 'partials/lottoDrawList.html',
             controller: 'LottoDrawController',
-            oper: 'index'
+            op: 'index'
         });
 
         $routeProvider.when('/lottoDraw/create', {
             templateUrl: 'partials/lottoDrawCreate.html',
             controller: 'LottoDrawController',
-            oper: 'create'
+            op: 'create'
         });
 
         $routeProvider.otherwise({
@@ -139,20 +139,26 @@ services.factory('LoginService', function($resource) {
 
 services.factory('LottoDrawService', function($resource) {
     return $resource('rest/lottoDraw/:action', {},
-        {
-            list: {
-                method: 'GET',
-                params: {'action': 'list', 'id': '@id'},
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            },
-            listElems: {
-                method: 'POST',
-                isArray: true,
-                params: {'action': 'shortList'},
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            {
+                list: {
+                    method: 'GET',
+                    params: {'action': 'list', 'id': '@id'},
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                },
+                listElems: {
+                    method: 'POST',
+                    isArray: true,
+                    params: {'action': 'shortList'},
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                },
+                initDB: {
+                    method: 'GET',
+                    isArray: true,
+                    params: {'action': 'init'},
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }
             }
-        }
-);
+    );
 //    return $resource('rest/lottoDraw/:id', {id: '@id'});
 });
 

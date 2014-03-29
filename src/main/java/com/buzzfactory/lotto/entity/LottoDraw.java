@@ -7,15 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.buzzfactory.lotto.JsonViews;
+import javax.persistence.Temporal;
+import static javax.persistence.TemporalType.DATE;
 
 import org.codehaus.jackson.map.annotate.JsonView;
 
 
-/**
- * JPA Annotated Pojo that represents a news entry.
- * 
- * @author Philip W. Sorst <philip@sorst.net>
- */
 @javax.persistence.Entity
 public class LottoDraw implements Entity {
 
@@ -23,8 +20,8 @@ public class LottoDraw implements Entity {
 	@GeneratedValue
 	private Long id;
 
-	@Column
-	private Date date;
+	@Column(unique = true)
+    private Date drawDate;
 
 	@Column
 	private Integer ball1;
@@ -45,6 +42,9 @@ public class LottoDraw implements Entity {
 	private Integer ball6;
     
 	@Column
+	private Integer plus;
+        
+	@Column
 	private Integer complementari;
 
 	@Column
@@ -57,7 +57,7 @@ public class LottoDraw implements Entity {
     
 	public LottoDraw() {
 
-		this.date = new Date();
+		this.drawDate = new Date();
 	}
 
 
@@ -69,15 +69,15 @@ public class LottoDraw implements Entity {
 
 
 	@JsonView(JsonViews.User.class)
-	public Date getDate() {
+	public Date getDrawDate() {
 
-		return this.date;
+		return this.drawDate;
 	}
 
 
-	public void setDate(Date date) {
+	public void setDrawDate(Date date) {
 
-		this.date = date;
+		this.drawDate = date;
 	}
 
 
@@ -171,7 +171,14 @@ public class LottoDraw implements Entity {
         this.joker = joker;
     }
 
+    @JsonView(JsonViews.User.class)
+    public Integer getPlus() {
+        return plus;
+    }
 
+    public void setPlus(Integer plus) {
+        this.plus = plus;
+    }
 
     
     
@@ -180,5 +187,7 @@ public class LottoDraw implements Entity {
 	public String toString() {
 		return String.format("LottoDraw[%d, %d, %d, %d, %d, %d, %d]", this.id, this.ball1, this.ball2, this.ball3, this.ball4, this.ball5, this.ball6);
 	}
+
+
 
 }

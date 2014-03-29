@@ -1,11 +1,18 @@
 // LottoDrawController
 var LottoDrawController = function($rootScope, $scope, $route, $location, LottoDrawService) {
     $scope.lottoDrawEntries = {};
-    var oper = $route.current.oper;
+    var op = $route.current.op;
 
-    init(oper);
+    init(op);
 
-
+    function init(op) {
+        if (op === 'index') {
+            $scope.lottoDrawEntries = LottoDrawService.query();
+        } else if (op === 'create') {
+            $scope.lottoDrawEntry = new LottoDrawService();
+            $scope.lottoDrawEntry.date = new Date();
+        }
+    };
 
 
 //    $scope.hasRole = function(role) {
@@ -15,6 +22,11 @@ var LottoDrawController = function($rootScope, $scope, $route, $location, LottoD
     $scope.listElems = function() {
         $scope.lottoDrawEntries = LottoDrawService.listElems($.param({nElems: $scope.nElems}));
     };
+
+    $scope.initDB = function() {
+        $scope.lottoDrawEntries = LottoDrawService.initDB();
+    };
+
 
     $scope.save = function() {
         $scope.lottoDrawEntry.$save(function() {
@@ -63,16 +75,6 @@ var LottoDrawController = function($rootScope, $scope, $route, $location, LottoD
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
     $scope.format = $scope.formats[0];
 // End date zone
-
-
-    function init(oper) {
-        if (oper === 'index') {
-            $scope.lottoDrawEntries = LottoDrawService.query();
-        } else if (oper === 'create') {
-            $scope.lottoDrawEntry = new LottoDrawService();
-            $scope.lottoDrawEntry.date = new Date();
-        }
-    };
 
 };
 
