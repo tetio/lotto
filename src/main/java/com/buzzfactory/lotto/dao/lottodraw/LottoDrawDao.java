@@ -2,6 +2,7 @@ package com.buzzfactory.lotto.dao.lottodraw;
 
 import com.buzzfactory.lotto.dao.Dao;
 import com.buzzfactory.lotto.entity.LottoDraw;
+import java.util.Date;
 
 
 /**
@@ -10,5 +11,5 @@ import com.buzzfactory.lotto.entity.LottoDraw;
  * @author Philip W. Sorst <philip@sorst.net>
  */
 public interface LottoDrawDao extends Dao<LottoDraw, Long> {
-
+    Boolean exists(Date drawDate);
 }
