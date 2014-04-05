@@ -13,7 +13,7 @@ public interface Dao<T extends Entity, I> {
 	T find(I id);
 
 
-	T save(T newsEntry);
+	T save(T entity);
 
 
 	void delete(I id);

@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -53,6 +54,7 @@ public class Lotto649ParserTest {
     /**
      * Test of parse method, of class Lotto649Parser.
      */
+    @Ignore
     @Test
     public void testParse() {
         System.out.println("parse");

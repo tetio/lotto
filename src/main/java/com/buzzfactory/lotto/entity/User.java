@@ -1,156 +1,150 @@
 package com.buzzfactory.lotto.entity;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.util.*;
+import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 @javax.persistence.Entity
 public class User implements Entity, UserDetails {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Column(unique = true, length = 16, nullable = false)
-	private String name;
+    @Column(unique = true, length = 16, nullable = false)
+    private String name;
 
-	@Column(length = 64, nullable = false)
-	private String password;
+    @Column(length = 64, nullable = false)
+    private String password;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<String> roles = new HashSet<String>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles = new HashSet<String>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name="Configuration",
+            joinColumns=@JoinColumn(name="OWNER_ID")
+    )
+    private Set<Configuration> configuration = new HashSet<Configuration>();
 
-	protected User() {
+    protected User() {
 
-		/* Reflection instantiation */
-	}
+        /* Reflection instantiation */
+    }
 
+    public User(String name, String passwordHash) {
 
-	public User(String name, String passwordHash) {
+        this.name = name;
+        this.password = passwordHash;
+    }
 
-		this.name = name;
-		this.password = passwordHash;
-	}
+    public Long getId() {
 
+        return this.id;
+    }
 
-	public Long getId() {
+    public void setId(Long id) {
 
-		return this.id;
-	}
+        this.id = id;
+    }
 
+    public String getName() {
 
-	public void setId(Long id) {
+        return this.name;
+    }
 
-		this.id = id;
-	}
+    public void setName(String name) {
 
+        this.name = name;
+    }
 
-	public String getName() {
+    public Set<String> getRoles() {
 
-		return this.name;
-	}
+        return this.roles;
+    }
 
+    public void setRoles(Set<String> roles) {
 
-	public void setName(String name) {
+        this.roles = roles;
+    }
 
-		this.name = name;
-	}
+    public void addRole(String role) {
 
+        this.roles.add(role);
+    }
 
-	public Set<String> getRoles() {
+    @Override
+    public String getPassword() {
 
-		return this.roles;
-	}
+        return this.password;
+    }
 
+    public void setPassword(String password) {
 
-	public void setRoles(Set<String> roles) {
+        this.password = password;
+    }
 
-		this.roles = roles;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
 
+        Set<String> roles = this.getRoles();
 
-	public void addRole(String role) {
+        if (roles == null) {
+            return Collections.emptyList();
+        }
 
-		this.roles.add(role);
-	}
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
 
+        return authorities;
+    }
 
-	@Override
-	public String getPassword() {
+    @Override
+    public String getUsername() {
 
-		return this.password;
-	}
+        return this.name;
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
 
-	public void setPassword(String password) {
+        return true;
+    }
 
-		this.password = password;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
 
+        return true;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+    @Override
+    public boolean isCredentialsNonExpired() {
 
-		Set<String> roles = this.getRoles();
+        return true;
+    }
 
-		if (roles == null) {
-			return Collections.emptyList();
-		}
+    @Override
+    public boolean isEnabled() {
 
-		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-		for (String role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role));
-		}
-
-		return authorities;
-	}
-
-
-	@Override
-	public String getUsername() {
-
-		return this.name;
-	}
-
-
-	@Override
-	public boolean isAccountNonExpired() {
-
-		return true;
-	}
-
-
-	@Override
-	public boolean isAccountNonLocked() {
-
-		return true;
-	}
-
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-
-		return true;
-	}
+        return true;
+    }
 
 
-	@Override
-	public boolean isEnabled() {
 
-		return true;
-	}
+    public void addConfiguration(Configuration configuration) {
+        this.getConfiguration().add(configuration);
+    }
 
+    public Set<Configuration> getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Set<Configuration> configuration) {
+        this.configuration = configuration;
+    }
 }

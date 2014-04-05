@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.buzzfactory.lotto.JsonViews;
-import javax.persistence.Temporal;
-import static javax.persistence.TemporalType.DATE;
 
 import org.codehaus.jackson.map.annotate.JsonView;
 

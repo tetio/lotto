@@ -3,10 +3,9 @@ package com.buzzfactory.lotto.dao;
 import java.util.Calendar;
 import java.util.Date;
 import com.buzzfactory.lotto.dao.lottodraw.LottoDrawDao;
-import com.buzzfactory.lotto.dao.newsentry.NewsEntryDao;
 import com.buzzfactory.lotto.dao.user.UserDao;
+import com.buzzfactory.lotto.entity.Configuration;
 import com.buzzfactory.lotto.entity.LottoDraw;
-import com.buzzfactory.lotto.entity.NewsEntry;
 import com.buzzfactory.lotto.entity.User;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Philip W. Sorst <philip@sorst.net>
  */
 public class DataBaseInitializer {
-
-    private NewsEntryDao newsEntryDao;
 
     private UserDao userDao;
 
@@ -31,10 +28,9 @@ public class DataBaseInitializer {
         /* Default constructor for reflection instantiation */
     }
 
-    public DataBaseInitializer(UserDao userDao, NewsEntryDao newsEntryDao, LottoDrawDao lottoDrawDao, PasswordEncoder passwordEncoder) {
+    public DataBaseInitializer(UserDao userDao, LottoDrawDao lottoDrawDao, PasswordEncoder passwordEncoder) {
 
         this.userDao = userDao;
-        this.newsEntryDao = newsEntryDao;
         this.lottoDrawDao = lottoDrawDao;
         this.passwordEncoder = passwordEncoder;
     }
@@ -45,19 +41,42 @@ public class DataBaseInitializer {
         userUser.addRole("user");
         this.userDao.save(userUser);
 
+        
+        
         User adminUser = new User("admin", this.passwordEncoder.encode("admin"));
         adminUser.addRole("user");
         adminUser.addRole("admin");
         this.userDao.save(adminUser);
+        
+        
+        Configuration usc = new Configuration();
+        usc.setBall1(1);
+        usc.setBall2(2);
+        usc.setBall3(5);
+        usc.setBall4(12);
+        usc.setBall5(24);
+        usc.setBall6(36);
+        usc.setCreationDate(new Date(System.currentTimeMillis()));
+        User sergiUser = new User("sergi", this.passwordEncoder.encode("sergi"));
+        sergiUser.addRole("user");
+        sergiUser.addRole("admin");
+        sergiUser.addConfiguration(usc);
+        this.userDao.save(sergiUser);        
 
-        long timestamp = System.currentTimeMillis() - 1000 * 60 * 60 * 24;
-        for (int i = 0; i < 10; i++) {
-            NewsEntry newsEntry = new NewsEntry();
-            newsEntry.setContent("This is example content " + i);
-            newsEntry.setDate(new Date(timestamp));
-            this.newsEntryDao.save(newsEntry);
-            timestamp += 1000 * 60 * 60;
-        }
+        Configuration umc = new Configuration();
+        umc.setBall1(2);
+        umc.setBall2(3);
+        umc.setBall3(4);
+        umc.setBall4(5);
+        umc.setBall5(6);
+        umc.setBall6(7);
+        umc.setCreationDate(new Date(System.currentTimeMillis()));
+        User martaUser = new User("marta", this.passwordEncoder.encode("marta"));
+        martaUser.addRole("user");
+        martaUser.addRole("admin");
+        martaUser.addConfiguration(umc);
+        this.userDao.save(martaUser);         
+        
 
 //        for (int i = 0; i < 20; i++) {
 //            LottoDraw ld = new LottoDraw();
